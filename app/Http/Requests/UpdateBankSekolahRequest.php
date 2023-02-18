@@ -24,7 +24,9 @@ class UpdateBankSekolahRequest extends FormRequest
     public function rules()
     {
         return [
+            'bank_id' => 'required|exists:banks,sandi_bank',
             'nama_rekening' => 'required',
+            'nomor_rekening' => 'required',
         ];
     }
 }

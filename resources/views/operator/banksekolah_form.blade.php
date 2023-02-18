@@ -7,12 +7,11 @@
                 <h5 class="card-header fw-bold fs-5" style="color: #012970;">{{ $title }}</h5>
 
                 <div class="card-body">
-                    {!! Form::model($model, ['route' => $route, 'method' => $method, 'files' => true]) !!}
+                    {!! Form::model($model, ['route' => $route, 'method' => $method]) !!}
                     <div class="form-group mt-3">
                         <label for="bank_id" class="form-label">Nama Bank</label>
                         {!! Form::select('bank_id', $listBank, $model->kode ?? null, [
                             'class' => 'form-control select2',
-                            $method == 'PUT' ? 'disabled' : '',
                         ]) !!}
                         <small class="text-danger">{{ $errors->first('bank_id') }}</small>
                     </div>
@@ -21,7 +20,6 @@
                         {!! Form::number('nomor_rekening', null, [
                             'class' => 'form-control',
                             'required' => 'required',
-                            $method == 'PUT' ? 'disabled' : '',
                         ]) !!}
                         <small class="text-danger">{{ $errors->first('nomor_rekening') }}</small>
                     </div>

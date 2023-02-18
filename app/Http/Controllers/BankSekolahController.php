@@ -24,7 +24,7 @@ class BankSekolahController extends Controller
     {
         $models = Model::paginate(settings()->get('app_pagination', '20'));
 
-        return view('operator.'.$this->viewIndex, [
+        return view('operator.' . $this->viewIndex, [
             'models' => $models,
             'routePrefix' => $this->routePrefix,
             'title' => 'DATA REKENING SEKOLAH'
@@ -41,13 +41,13 @@ class BankSekolahController extends Controller
         $data = [
             'model' => new Model(),
             'method' => 'POST',
-            'route' => $this->routePrefix.'.store',
+            'route' => $this->routePrefix . '.store',
             'button' => 'SIMPAN',
             'title' => 'FORM DATA REKENING SEKOLAH',
             'listBank' => Bank::pluck('nama_bank', 'id'),
         ];
 
-        return view('operator.'.$this->viewCreate, $data);
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
@@ -80,13 +80,13 @@ class BankSekolahController extends Controller
         $data = [
             'model' => $model,
             'method' => 'PUT',
-            'route' => [$this->routePrefix.'.update', $id],
+            'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE',
             'title' => 'FORM DATA REKENING SEKOLAH',
             'listBank' => Bank::pluck('nama_bank', 'sandi_bank'),
         ];
 
-        return view('operator.'.$this->viewEdit, $data);
+        return view('operator.' . $this->viewEdit, $data);
     }
 
     /**
@@ -100,12 +100,14 @@ class BankSekolahController extends Controller
     {
         $reqData = $request->validated();
         $model = Model::findOrFail($id);
-        $reqData['kode'] = $model->kode;
-        $reqData['nama_bank'] = $model->nama_bank;
+        $bank = Bank::where('sandi_bank', $reqData['bank_id'])->first();
+        unset($reqData['bank_id']);
+        $reqData['kode'] = $bank->sandi_bank;
+        $reqData['nama_bank'] = $bank->nama_bank;
         $model->fill($reqData);
         $model->save();
         flash('Data berhasil diubah');
-        return redirect()->route($this->routePrefix.'.index');
+        return redirect()->route($this->routePrefix . '.index');
     }
 
     /**
@@ -117,7 +119,7 @@ class BankSekolahController extends Controller
     public function destroy($id)
     {
         $model = Model::findOrFail($id);
-        if($model->pembayaran->count() >= 1){
+        if ($model->pembayaran->count() >= 1) {
             flash()->addError('data gagal dihapus karena terkait data lain');
             return back();
         }
