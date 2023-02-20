@@ -26,11 +26,11 @@ class SiswaController extends Controller
     public function index(Request $request, SiswaKelasChart $siswaKelasChart)
     {
         $models = Model::with('wali', 'user')->latest();
-        if($request->filled('q')){
+        if ($request->filled('q')) {
             $models = $models->search($request->q);
         }
 
-        return view('operator.'.$this->viewIndex, [
+        return view('operator.' . $this->viewIndex, [
             'models' => $models->paginate(settings()->get('app_pagination', '20')),
             'routePrefix' => $this->routePrefix,
             'title' => 'DATA SISWA',
@@ -51,12 +51,12 @@ class SiswaController extends Controller
             'listBiaya' => Biaya::whereNull('parent_id')->has('children')->pluck('nama', 'id'),
             'model' => new Model(),
             'method' => 'POST',
-            'route' => $this->routePrefix.'.store',
+            'route' => $this->routePrefix . '.store',
             'button' => 'SIMPAN',
             'title' => 'FORM DATA SISWA',
             'wali' => User::where('akses', 'wali')->pluck('name', 'id'),
         ];
-        return view('operator.'.$this->viewCreate, $data);
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
@@ -70,15 +70,18 @@ class SiswaController extends Controller
         // $reqData = $request->validate([...]); old
         $reqData = $request->validated();
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             $reqData['foto'] = $request->file('foto')->store('public');
         }
 
         $siswa = Model::create($reqData);
 
+        // tes
         return response()->json([
             'message' => 'Data berhasil disimpan',
         ], 200);
+        // tes
+
         // flash()->addSuccess('Data berhasil disimpan');
         // return back();
     }
@@ -91,7 +94,7 @@ class SiswaController extends Controller
      */
     public function show($id)
     {
-        return view('operator.'.$this->viewShow, [
+        return view('operator.' . $this->viewShow, [
             'model' => Model::findOrFail($id),
             'title' => 'DETAIL SISWA'
         ]);
@@ -109,13 +112,13 @@ class SiswaController extends Controller
             'listBiaya' => Biaya::whereNull('parent_id')->has('children')->pluck('nama', 'id'),
             'model' => Model::findOrFail($id),
             'method' => 'PUT',
-            'route' => [$this->routePrefix.'.update', $id],
+            'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE',
             'title' => 'FORM DATA SISWA',
             'wali' => User::where('akses', 'wali')->pluck('name', 'id'),
         ];
 
-        return view('operator.'.$this->viewEdit, $data);
+        return view('operator.' . $this->viewEdit, $data);
     }
 
     /**
@@ -131,8 +134,8 @@ class SiswaController extends Controller
 
         $model = Model::findOrFail($id);
 
-        if($request->hasFile('foto')){
-            if($model->foto != null && Storage::exists($model->foto)){
+        if ($request->hasFile('foto')) {
+            if ($model->foto != null && Storage::exists($model->foto)) {
                 Storage::delete($model->foto);
             }
             $reqData['foto'] = $request->file('foto')->store('public');
@@ -140,9 +143,12 @@ class SiswaController extends Controller
 
         $model->fill($reqData);
         $model->save();
+        // tes
         return response()->json([
             'message' => 'Data berhasil diubah',
-        ], 200);
+        ], 201);
+        // tes
+
         // flash()->addSuccess('Data berhasil diubah');
         // return redirect()->route($this->routePrefix.'.index');
     }
@@ -156,11 +162,11 @@ class SiswaController extends Controller
     public function destroy($id)
     {
         $siswa = Model::findOrFail($id);
-        if($siswa->tagihan->count() >= 1){
+        if ($siswa->tagihan->count() >= 1) {
             flash()->addError('Data tidak bisa dihapus karena memiliki relasi dengan data tagihan');
             return back();
         }
-        if($siswa->foto != null && Storage::exists($siswa->foto)){
+        if ($siswa->foto != null && Storage::exists($siswa->foto)) {
             Storage::delete($siswa->foto);
         }
         $siswa->delete();

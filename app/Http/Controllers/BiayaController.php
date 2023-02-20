@@ -22,13 +22,13 @@ class BiayaController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->filled('q')){
+        if ($request->filled('q')) {
             $models = Model::with('user')->whereNull('parent_id')->search($request->q)->paginate(settings()->get('app_pagination', '20'));
-        }else{
+        } else {
             $models = Model::with('user')->whereNull('parent_id')->latest()->paginate(settings()->get('app_pagination', '20'));
         }
 
-        return view('operator.'.$this->viewIndex, [
+        return view('operator.' . $this->viewIndex, [
             'models' => $models,
             'routePrefix' => $this->routePrefix,
             'title' => 'DATA BIAYA'
@@ -43,7 +43,7 @@ class BiayaController extends Controller
     public function create(Request $request)
     {
         $biaya = new Model();
-        if($request->filled('parent_id')){
+        if ($request->filled('parent_id')) {
             $biaya = Model::with('children')->findOrFail($request->parent_id);
         }
 
@@ -51,12 +51,12 @@ class BiayaController extends Controller
             'parentData' => $biaya,
             'model' => new Model(),
             'method' => 'POST',
-            'route' => $this->routePrefix.'.store',
+            'route' => $this->routePrefix . '.store',
             'button' => 'SIMPAN',
             'title' => 'FORM DATA BIAYA',
         ];
 
-        return view('operator.'.$this->viewCreate, $data);
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
@@ -71,11 +71,11 @@ class BiayaController extends Controller
 
         // jika parent Id tidak ada maka apa
         $hasParentId = array_key_exists('parent_id', $reqData);
-        if(!$hasParentId){
+        if (!$hasParentId) {
             $request->validate([
                 'nama' => 'required|min:3|max:255|unique:biayas,nama',
             ]);
-        }else{
+        } else {
             $request->validate([
                 'jumlah' => 'required|numeric|min:1000|max:999999',
             ]);
@@ -94,7 +94,7 @@ class BiayaController extends Controller
      */
     public function show($id)
     {
-        return view('operator.'.$this->viewShow, [
+        return view('operator.' . $this->viewShow, [
             'model' => Model::findOrFail($id),
             'title' => 'DETAIL BIAYA'
         ]);
@@ -106,16 +106,17 @@ class BiayaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){
+    public function edit($id)
+    {
         $data = [
             'model' => Model::findOrFail($id),
             'method' => 'PUT',
-            'route' => [$this->routePrefix.'.update', $id],
+            'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE',
             'title' => 'FORM DATA BIAYA',
         ];
 
-        return view('operator.'.$this->viewEdit, $data);
+        return view('operator.' . $this->viewEdit, $data);
     }
 
     /**
@@ -132,7 +133,7 @@ class BiayaController extends Controller
         $model->fill($reqData);
         $model->save();
         flash('Data berhasil diubah');
-        return redirect()->route($this->routePrefix.'.index');
+        return redirect()->route($this->routePrefix . '.index');
     }
 
     /**
@@ -144,15 +145,11 @@ class BiayaController extends Controller
     public function destroy($id)
     {
         $model = Model::findOrFail($id);
-        if($model->siswa->count() >= 1){
+        if ($model->siswa->count() >= 1) {
             flash()->addError('Data gagal dihapus karena terkait data lain');
             return back();
         }
-        if($model->children->count() >= 1){
-            // cara manual bapak
-            // flash()->addError('data tidak bisa dihapus karena masih ada item biaya, silahkan hapus terlebih dahulu');
-            // return back();
-            // cara otomatis saya
+        if ($model->children->count() >= 1) {
             $model->children()->delete();
         }
         $model->delete();
@@ -163,7 +160,7 @@ class BiayaController extends Controller
     public function deleteItem($id)
     {
         $model = Model::findOrFail($id);
-        if($model->parent->siswa->count() >= 1){
+        if ($model->parent->siswa->count() >= 1) {
             flash()->addError('Data gagal dihapus karena terkait data lain');
             return back();
         }

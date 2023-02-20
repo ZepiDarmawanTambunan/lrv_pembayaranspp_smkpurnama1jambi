@@ -15,15 +15,28 @@ class TagihanDestroy extends Controller
      */
     public function __invoke(Request $request)
     {
-        for($i = 0; $i < count($request->tagihan_id); $i++){
+        $berhasilDihapus = 0;
+        $gagalDihapus = 0;
+        $message = 'Data berhasil dihapus';
+
+        for ($i = 0; $i < count($request->tagihan_id); $i++) {
             $tagihan = Tagihan::where('id', $request->tagihan_id[$i])->first();
-            if($tagihan != null && $tagihan->status != 'lunas'){
+            if ($tagihan != null && $tagihan->status != 'lunas') {
                 // delete tagihan
                 $tagihan->delete();
+
+                $berhasilDihapus += 1;
+            } else {
+                $gagalDihapus += 1;
             }
         }
+        $message  = $message . ' : ' . $berhasilDihapus;
+        if ($gagalDihapus > 0) {
+            $message = $message . ' | Data gagal dihapus : ' . $gagalDihapus;
+        }
+
         return response()->json([
-            'message' => 'Data berhasil dihapus',
+            'message' => $message,
         ], 200);
     }
 }

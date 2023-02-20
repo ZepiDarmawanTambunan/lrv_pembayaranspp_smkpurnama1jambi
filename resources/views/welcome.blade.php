@@ -11,7 +11,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{ asset('storage') }}/images/logo.png" rel="icon">
+    <link href="{{ \Storage::url(settings('app_logo')) }}" rel="icon">
 
     <!-- Google Fonts -->
     <link

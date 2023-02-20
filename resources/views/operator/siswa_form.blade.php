@@ -32,9 +32,12 @@
                         $('#alert-message').removeClass('d-none');
                         $('#alert-message').addClass('alert-success');
                         $('#alert-message').html(response.message);
-                        if ($("input[name='_method']").val() != 'PUT') {
+                        if ($("#form-ajax input[name='_method']").val() == 'PUT') {
+                            $('#img').attr('src', e.target.result);
+                        } else {
                             $('#form-ajax')[0].reset();
                             $('.select2').val(null).trigger('change');
+                            $('#img').attr('src', "{{ \Storage::url($model->foto) }}");
                         }
                     },
                     error: function(xhr, status, error) {
@@ -113,9 +116,12 @@
                         ]) !!}
                         <small class="text-danger">{{ $errors->first('angkatan') }}</small>
                     </div>
-                    <div class="mt-3">
-                        <img src="{{ \Storage::url($model->foto) }}" width="200" class="img-thumbnail" id="img">
-                    </div>
+                    @if ($model->foto != null)
+                        <div class="mt-3">
+                            <img src="{{ \Storage::url($model->foto) }}" width="200" class="img-thumbnail"
+                                id="img">
+                        </div>
+                    @endif
                     <div class="form-group mt-3">
                         <label for="foto" class="form-label">Foto <u>(Format: jpg, jpeg, png, Ukuran Maks:
                                 5MB)</u></label>
