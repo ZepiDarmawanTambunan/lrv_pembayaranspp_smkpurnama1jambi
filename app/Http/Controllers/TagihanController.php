@@ -66,9 +66,10 @@ class TagihanController extends Controller
         $requestData = $request->validated();
         $siswa = Siswa::currentStatus('aktif');
         $requestData['status'] = 'baru';
+        $requestData['jenis'] = 'spp';
         $tanggalTagihan = Carbon::parse($requestData['tanggal_tagihan']);
         $bulanTagihan = $tanggalTagihan->format('m');
-        $tahunTagihan = $tanggalTagihan->format('y');
+        $tahunTagihan = $tanggalTagihan->format('Y');
 
         if (isset($requestData['siswa_id']) && $requestData['siswa_id'] != null) {
             $siswa = $siswa->where('id', $requestData['siswa_id']);
@@ -78,10 +79,10 @@ class TagihanController extends Controller
         DB::beginTransaction();
         foreach ($siswa as $itemSiswa) {
             $requestData['siswa_id'] = $itemSiswa->id;
-
             $cekTagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulanTagihan, $tahunTagihan) {
-                return $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
+                $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
             })->first();
+
             if ($cekTagihan == null) {
                 $tagihan = Model::create($requestData);
                 if ($tagihan->siswa->wali != null) {

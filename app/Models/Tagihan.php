@@ -26,13 +26,13 @@ class Tagihan extends Model
 
     public function getStatusStyleAttribute()
     {
-        if($this->status == 'lunas'){
+        if ($this->status == 'lunas') {
             return 'success';
         }
-        if($this->status == 'angsur'){
+        if ($this->status == 'angsur') {
             return 'warning';
         }
-        if($this->status == 'baru'){
+        if ($this->status == 'baru') {
             return 'primary';
         }
     }
@@ -45,11 +45,11 @@ class Tagihan extends Model
     protected function totalPembayaran(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->pembayaran()->sum('jumlah_dibayar') ,
+            get: fn ($value) => $this->pembayaran()->sum('jumlah_dibayar'),
         );
     }
 
-        /**
+    /**
      * Get the user's first name.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -73,9 +73,9 @@ class Tagihan extends Model
 
     public function getStatusTagihanWali()
     {
-        if($this->status == 'baru'){
+        if ($this->status == 'baru') {
             return 'Belum dibayar';
-        }else if($this->status == 'lunas'){
+        } else if ($this->status == 'lunas') {
             return 'Sudah dibayar';
         }
 
@@ -130,13 +130,13 @@ class Tagihan extends Model
         static::updating(function ($tagihan) {
             $tagihan->user_id = auth()->user()->id;
         });
-        static::deleting(function($tagihan){
+        static::deleting(function ($tagihan) {
             // delete notif dari wali terkait tagihan (klo operator gak ada)
             DB::table('notifications')->where('data->tagihan_id', $tagihan->id)->delete();
 
             // delete pembayarans
-            if($tagihan->pembayaran->count() >= 1){
-                $tagihan->pembayaran()->each(function($item){
+            if ($tagihan->pembayaran->count() >= 1) {
+                $tagihan->pembayaran()->each(function ($item) {
                     $item->delete();
                 });
             }
@@ -150,11 +150,11 @@ class Tagihan extends Model
     {
         $data = [];
 
-        if($this->total_pembayaran >= $this->total_tagihan){
+        if ($this->total_pembayaran >= $this->total_tagihan) {
             $tanggalBayar = $this->pembayaran()
-            ->orderBy('tanggal_bayar', 'desc')
-            ->first()
-            ->tanggal_bayar;
+                ->orderBy('tanggal_bayar', 'desc')
+                ->first()
+                ->tanggal_bayar;
             $this->update([
                 'status' => 'lunas',
                 'tanggal_lunas' => $tanggalBayar,
@@ -162,12 +162,12 @@ class Tagihan extends Model
             $data['status1'] = 'lunas';
         }
 
-        if($this->total_pembayaran > 0 && $this->total_pembayaran < $this->total_tagihan){
+        if ($this->total_pembayaran > 0 && $this->total_pembayaran < $this->total_tagihan) {
             $this->update(['status' => 'angsur', 'tanggal_lunas' => null]);
             $data['status2'] = 'angsur';
         }
 
-        if($this->total_pembayaran <= 0){
+        if ($this->total_pembayaran <= 0) {
             $this->update([
                 'status' => 'baru',
                 'tanggal_lunas' => null,
