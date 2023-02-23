@@ -80,7 +80,7 @@ class TagihanController extends Controller
         foreach ($siswa as $itemSiswa) {
             $requestData['siswa_id'] = $itemSiswa->id;
             $cekTagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulanTagihan, $tahunTagihan) {
-                $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
+                return $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
             })->first();
 
             if ($cekTagihan == null) {
