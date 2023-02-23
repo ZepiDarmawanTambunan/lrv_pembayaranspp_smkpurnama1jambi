@@ -66,7 +66,6 @@ class TagihanController extends Controller
         $requestData = $request->validated();
         $siswa = Siswa::currentStatus('aktif');
         $requestData['status'] = 'baru';
-        $requestData['jenis'] = 'spp';
         $tanggalTagihan = Carbon::parse($requestData['tanggal_tagihan']);
         $bulanTagihan = $tanggalTagihan->format('m');
         $tahunTagihan = $tanggalTagihan->format('Y');
