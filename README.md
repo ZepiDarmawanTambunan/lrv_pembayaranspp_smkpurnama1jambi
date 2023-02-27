@@ -21,9 +21,13 @@
 * MENERAPKAN TRAIT DAN HELPER
 * MENERAPKAN KOMPONEN
 
+ ########################################################
+
 * AKTOR:
 * BENDAHARA
 WALI MURID / SISWA
+
+ ########################################################
 
 * BERIKUT SCREEN SHOT, TAMPILAN DARI APLIKASI PEMBAYARAN SPP PADA SMK PURNAMA 1 KOTA JAMBI
 * [tampilan aplikasi.pdf](https://github.com/ZepiDarmawanTambunan/lrv_pembayaranspp_smkpurnama1jambi/files/10835239/tampilan.aplikasi.pdf)
