@@ -1,4 +1,4 @@
-LARAVEL 9 \n
+LARAVEL 9 /n
 MYSQL \n
 
 * FITUR
