@@ -1,5 +1,5 @@
-LARAVEL 9 /n
-MYSQL \n
+- LARAVEL 9
+- MYSQL
 
 * FITUR
 LOGIN \n
