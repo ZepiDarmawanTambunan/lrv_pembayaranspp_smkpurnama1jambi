@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use App\Models\TagihanDetail;
 use App\Models\Pembayaran;
 use App\Http\Requests\StoreTagihanRequest;
+use App\Models\Biaya;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TagihanNotification;
@@ -33,13 +34,17 @@ class TagihanController extends Controller
         if ($request->filled('status')) {
             $models->where('status', $request->status);
         }
+        if ($request->filled('biaya_id')) {
+            $models->where('biaya_id', $request->biaya_id);
+        }
         if ($request->filled('q')) {
             $models->search($request->q, null, true);
         }
         return view('operator.' . $this->viewIndex, [
             'models' => $models->paginate(settings()->get('app_pagination', '20')),
             'routePrefix' => $this->routePrefix,
-            'title' => 'DATA TAGIHAN'
+            'title' => 'DATA TAGIHAN',
+            'biayaList' => Biaya::whereNull('parent_id')->pluck('nama', 'id'),
         ]);
     }
 
@@ -78,6 +83,7 @@ class TagihanController extends Controller
         DB::beginTransaction();
         foreach ($siswa as $itemSiswa) {
             $requestData['siswa_id'] = $itemSiswa->id;
+            $requestData['biaya_id'] = $itemSiswa->biaya_id; //tambahan
             $cekTagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulanTagihan, $tahunTagihan) {
                 return $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
             })->first();
@@ -89,7 +95,7 @@ class TagihanController extends Controller
                 }
                 $biaya = $itemSiswa->biaya->children;
                 foreach ($biaya as $itemBiaya) {
-                    $detail = TagihanDetail::create([
+                    TagihanDetail::create([
                         'tagihan_id' => $tagihan->id,
                         'nama_biaya' => $itemBiaya->nama,
                         'jumlah_biaya' => $itemBiaya->jumlah,

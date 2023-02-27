@@ -12,11 +12,9 @@ class KartuSppController extends Controller
 {
     public function index(Request $request)
     {
-        // $siswa = Siswa::with('tagihan')->whereHas('tagihan', function ($q) {
-        //     $q->where('jenis', 'spp');
-        // })->where('id', $request->siswa_id);
-
-        $siswa = Siswa::with('tagihan')->where('id', $request->siswa_id);
+        $siswa = Siswa::with('tagihan')->whereHas('tagihan', function ($q) {
+            $q->where('jenis', 'spp');
+        })->where('id', $request->siswa_id);
 
         if (Auth::user()->akses == 'wali') {
             $siswa = $siswa->where('wali_id', Auth::id());

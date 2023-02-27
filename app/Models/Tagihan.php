@@ -27,13 +27,13 @@ class Tagihan extends Model
     public function getStatusStyleAttribute()
     {
         if ($this->status == 'lunas') {
-            return 'success';
+            return 'primary';
         }
         if ($this->status == 'angsur') {
             return 'warning';
         }
         if ($this->status == 'baru') {
-            return 'primary';
+            return 'danger';
         }
     }
 
@@ -95,6 +95,16 @@ class Tagihan extends Model
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(Siswa::class)->withDefault();
+    }
+
+    /**
+     * Get the user that owns the Tagihan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function biaya(): BelongsTo
+    {
+        return $this->belongsTo(Biaya::class);
     }
 
     /**

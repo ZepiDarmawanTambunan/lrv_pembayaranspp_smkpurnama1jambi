@@ -38,9 +38,10 @@
                                 <tr>
                                     <th width="1%">No</th>
                                     <th width="1%;">NISN</th>
-                                    <th>Nama</th>
+                                    <th width="30%;">Nama</th>
                                     <th>Tanggal Tagihan</th>
-                                    <th width="1%;">Status</th>
+                                    <th>Status</th>
+                                    <th>Jenis</th>
                                     <th class="text-end">Total Tagihan</th>
                                 </tr>
                             </thead>
@@ -53,6 +54,9 @@
                                         <td>{{ $item->tanggal_tagihan->translatedFormat(config('app.format_tanggal')) }}
                                         </td>
                                         <td>{{ $item->status }}</td>
+                                        <td>
+                                            {{ $item->biaya->nama }}
+                                        </td>
                                         <td class="text-end">{{ formatRupiah($item->tagihanDetails->sum('jumlah_biaya')) }}
                                         </td>
 

@@ -5,11 +5,17 @@
         $(document).ready(function() {
             $('#btn-hapus').hide();
             $('.check-siswa-id').change(function(e) {
+                if ($('.check-siswa-id:checked').length == $('.check-siswa-id').length) {
+                    $('#checked-all').prop('checked', true);
+                }
                 if ($(this).prop('checked')) {
                     $('#btn-hapus').show();
                 }
                 if ($('.check-siswa-id:checked').length == 0) {
                     $('#btn-hapus').hide();
+                }
+                if ($('.check-siswa-id:checked').length < $('.check-siswa-id').length) {
+                    $('#checked-all').prop('checked', false);
                 }
             });
             $('#checked-all').click(function(e) {

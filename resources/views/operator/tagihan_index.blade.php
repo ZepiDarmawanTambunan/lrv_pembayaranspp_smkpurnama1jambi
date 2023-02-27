@@ -90,34 +90,42 @@
                 <div class="alert d-none my-1" role="alert" id="alert-message"></div>
                 <h5 class="card-header fw-bold fs-5" style="color: #012970;">{{ $title }}</h5>
                 <div class="card-body">
-
-                    <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mt-3">
-                        Tambah
+                    <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mt-4">
+                        Tambah Tagihan SPP
                     </a>
-                    <div class="row my-3">
+                    <a href="{{ route('tagihanlainstep.create', ['step' => 1]) }}" class="btn btn-success mt-4 ml-2">
+                        Tambah Tagihan Lain
+                    </a>
+                    <div class="row my-4">
                         <div class="col-md-12">
                             {!! Form::open(['route' => $routePrefix . '.index', 'method' => 'GET']) !!}
                             <div class="row justify-content-end gx-2">
-                                <div class="col-md-4 col-sm-12 my-3 my-md-0">
+                                <div class="col-md-3 col-sm-12 my-3 my-md-0">
                                     {!! Form::text('q', request('q'), ['class' => 'form-control', 'placeholder' => 'Pencarian Data Siswa']) !!}
                                 </div>
                                 <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
                                     {!! Form::select(
                                         'status',
                                         [
-                                            '' => 'Pilih Status',
                                             'lunas' => 'Lunas',
                                             'baru' => 'Baru',
                                             'angsur' => 'Angsur',
                                         ],
                                         request('status'),
-                                        ['class' => 'form-select'],
+                                        ['class' => 'form-select', 'placeholder' => 'pilih status'],
                                     ) !!}
+                                </div>
+
+                                <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
+                                    {!! Form::select('biaya_id', $biayaList, request('biaya_id'), [
+                                        'class' => 'form-select',
+                                        'placeholder' => 'Pilih biaya',
+                                    ]) !!}
                                 </div>
                                 <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
                                     {!! Form::selectMonth('bulan', request('bulan'), ['class' => 'form-control', 'placeholder' => 'Pilih Bulan']) !!}
                                 </div>
-                                <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
+                                <div class="col-md-1 col-sm-12 mb-3 mb-md-0">
                                     {!! Form::selectRange('tahun', date('Y') - 3, date('Y') + 1, request('tahun') ?? date('Y'), [
                                         'class' => 'form-control',
                                     ]) !!}
@@ -139,21 +147,28 @@
                                         <input type="checkbox" id="checked-all">
                                     </th>
                                     <th>Nama</th>
-                                    <th>Tanggal Tagihan</th>
+                                    <th>Tgl Dibuat</th>
                                     <th width="1%;">Status</th>
-                                    <th>Total Tagihan</th>
+                                    <th width="10%;">Jenis</th>
+                                    <th>Total</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($models as $item)
-                                    <tr>
+                                    <tr valign="middle">
                                         <td>{!! Form::checkbox('tagihan_id[]', $item->id, null, ['class' => 'check-tagihan-id']) !!}</td>
                                         <td>{{ $item->siswa->nama }} ({{ $item->siswa->nisn }})</td>
                                         <td>{{ $item->tanggal_tagihan->translatedFormat('d-M-Y') }}</td>
                                         <td>
                                             <span class="badge rounded-pill bg-{{ $item->status_style }}">
-                                                {{ $item->status }}
+                                                {{ $item->status == 'baru' ? 'Belum bayar' : $item->status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="badge rounded bg-{{ $item->jenis == 'spp' ? 'primary' : 'success' }}">
+                                                {{ $item->jenis }}
                                             </span>
                                         </td>
                                         <td>{{ formatRupiah($item->tagihanDetails->sum('jumlah_biaya')) }}</td>

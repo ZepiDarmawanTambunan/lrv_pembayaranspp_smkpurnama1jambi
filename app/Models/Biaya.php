@@ -39,6 +39,16 @@ class Biaya extends Model
     }
 
     /**
+     * Get all of the tagihan for the Biaya
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tagihan(): HasMany
+    {
+        return $this->hasMany(Tagihan::class);
+    }
+
+    /**
      * Get the user's first name.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -46,7 +56,7 @@ class Biaya extends Model
     protected function namaBiayaFull(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->nama.' - '.$this->formatRupiah('jumlah'),
+            get: fn ($value) => $this->nama . ' - ' . $this->formatRupiah('jumlah'),
         );
     }
 
@@ -72,7 +82,7 @@ class Biaya extends Model
         return $this->belongsTo(User::class);
     }
 
-        /**
+    /**
      * Get the user that owns the Biaya
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -82,7 +92,7 @@ class Biaya extends Model
         return $this->belongsTo(Biaya::class, 'parent_id');
     }
 
-        /**
+    /**
      * The "booted" method of the model.
      *
      * @return void

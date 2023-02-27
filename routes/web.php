@@ -8,7 +8,8 @@ use App\Http\Controllers\BerandaOperatorController;
 use App\Http\Controllers\BerandaWaliController;
 use App\Http\Controllers\BiayaController;
 use App\Http\Controllers\TagihanController;
-use App\Http\Controllers\TagihanBiayaLainController;
+use App\Http\Controllers\TagihanLainStepController;
+use App\Http\Controllers\TagihanLainStep2Controller;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\KwitansiPembayaranController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\TagihanUpdateLunas;
 use App\Http\Controllers\SettingWhacenterController;
 use App\Http\Controllers\TagihanDestroy;
 use App\Http\Controllers\SiswaDestroy;
+use App\Http\Controllers\TagihanLainStep4Controller;
 
 Route::get('login/login-url', [LoginController::class, 'loginUrl'])->name('login.url');
 
@@ -55,7 +57,10 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function
     Route::resource('biaya', BiayaController::class);
     Route::resource('tagihan', TagihanController::class);
     Route::resource('pembayaran', PembayaranController::class);
-    Route::resource('tagihanlain', TagihanBiayaLainController::class);
+    Route::resource('tagihanlainstep', TagihanLainStepController::class);
+    Route::post('tagihanlainstep2', TagihanLainStep2Controller::class)->name('tagihanlainstep2.store');
+    Route::get('tagihanlainstep2', TagihanLainStep2Controller::class)->name('tagihanlainstep2.delete');
+    Route::post('tagihanlainstep4', TagihanLainStep4Controller::class)->name('tagihanlainstep4.store');
 
     Route::get('delete-biaya-item/{id}', [BiayaController::class, 'deleteItem'])->name('delete-biaya.item');
     Route::get('status/update', [StatusController::class, 'update'])->name('status.update');

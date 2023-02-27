@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User as Model;
+use Auth;
 
 class UserController extends Controller
 {
@@ -19,10 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('operator.'.$this->viewIndex, [
-            'models' => Model::where('akses', '!=','wali')
-            ->latest()
-            ->paginate(settings()->get('app_pagination', '20')),
+        return view('operator.' . $this->viewIndex, [
+            'models' => Model::where('akses', '!=', 'wali')
+                ->latest()
+                ->paginate(settings()->get('app_pagination', '20')),
             'routePrefix' => $this->routePrefix,
             'title' => 'DATA USER'
         ]);
@@ -39,12 +40,12 @@ class UserController extends Controller
         $data = [
             'model' => new Model(),
             'method' => 'POST',
-            'route' => $this->routePrefix.'.store',
+            'route' => $this->routePrefix . '.store',
             'button' => 'SIMPAN',
             'title' => 'Form Data User',
         ];
 
-        return view('operator.'.$this->viewCreate, $data);
+        return view('operator.' . $this->viewCreate, $data);
     }
 
     /**
@@ -92,12 +93,12 @@ class UserController extends Controller
         $data = [
             'model' => Model::findOrFail($id),
             'method' => 'PUT',
-            'route' => [$this->routePrefix.'.update', $id],
+            'route' => [$this->routePrefix . '.update', $id],
             'button' => 'UPDATE',
             'title' => 'FORM DATA USER',
         ];
 
-        return view('operator.'.$this->viewEdit, $data);
+        return view('operator.' . $this->viewEdit, $data);
     }
 
     /**
@@ -111,15 +112,15 @@ class UserController extends Controller
     {
         $reqData = $request->validate([
             'name' => 'required|min:3|max:255',
-            'email' => 'required|email|min:5|max:255|unique:users,email,'.$id,
-            'nohp' => 'required|min:11|max:14|unique:users,nohp,'.$id,
+            'email' => 'required|email|min:5|max:255|unique:users,email,' . $id,
+            'nohp' => 'required|min:11|max:14|unique:users,nohp,' . $id,
             'akses' => 'required|in:operator,admin',
             'password' => 'nullable'
         ]);
         $model = Model::findOrFail($id);
-        if($reqData['password'] == ""){
+        if ($reqData['password'] == "") {
             unset($reqData['password']);
-        }else{
+        } else {
             $reqData['password'] = bcrypt($reqData['password']);
         }
         $model->fill($reqData);
@@ -137,7 +138,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         $model = Model::findOrFail($id);
-        if($model->email == 'operator@gmail.com'){
+        if ($model->email == 'operator@gmail.com') {
+            flash()->addError('Data tidak bisa dihapus');
+            return back();
+        }
+        if ($model->email == Auth::user()->email) {
             flash()->addError('Data tidak bisa dihapus');
             return back();
         }

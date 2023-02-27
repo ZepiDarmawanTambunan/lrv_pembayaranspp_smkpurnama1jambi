@@ -29,7 +29,7 @@
     <li class="nav-item">
         <a class="nav-link {{ \Route::is('siswa.*') ? '' : 'collapsed' }}" href="{{ route('siswa.index') }}">
             <i class="bi bi-people"></i>
-            <span>Data Siswa</span>
+            <span>Data Siswa/i</span>
         </a>
     </li>
 
@@ -60,7 +60,7 @@
     <li class="nav-item">
         <a class="nav-link {{ \Route::is('tagihan.*') ? '' : 'collapsed' }}" href="{{ route('tagihan.index') }}">
             <i class="bi bi-calendar2-check"></i>
-            <span>Data Tagihan SPP</span>
+            <span>Data Tagihan</span>
         </a>
     </li>
 
@@ -89,7 +89,7 @@
         <a class="nav-link {{ \Route::is('migrasiform*') ? '' : 'collapsed' }}"
             href="{{ route('migrasiform.index') }}">
             <i class="bi bi-box-arrow-right"></i>
-            <span>Form Migrasi</span>
+            <span>Mutasi Siswa/i</span>
         </a>
     </li>
 

@@ -145,7 +145,8 @@ class BiayaController extends Controller
     public function destroy($id)
     {
         $model = Model::findOrFail($id);
-        if ($model->siswa->count() >= 1) {
+        // handle tagihan yg memiliki biaya_id
+        if ($model->siswa->count() >= 1 || $model->tagihan->count() >= 1) {
             flash()->addError('Data gagal dihapus karena terkait data lain');
             return back();
         }
@@ -160,10 +161,10 @@ class BiayaController extends Controller
     public function deleteItem($id)
     {
         $model = Model::findOrFail($id);
-        if ($model->parent->siswa->count() >= 1) {
-            flash()->addError('Data gagal dihapus karena terkait data lain');
-            return back();
-        }
+        // if ($model->parent->siswa->count() >= 1) {
+        // flash()->addError('Data gagal dihapus karena terkait data lain');
+        // return back();
+        // }
         $model->delete();
         flash('Data berhasil dihapus');
         return back();

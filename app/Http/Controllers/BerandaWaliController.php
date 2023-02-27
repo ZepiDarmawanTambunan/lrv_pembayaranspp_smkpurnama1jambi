@@ -10,13 +10,13 @@ class BerandaWaliController extends Controller
 {
     public function index()
     {
-        // $siswa = Siswa::with('tagihan')->where('wali_id', Auth::id())
-        // ->whereHas('tagihan', function($q){
-        //     $q->where('jenis', 'spp');
-        // })
-        // ->orderBy('nama', 'asc')->get();
+        $siswa = Siswa::with('tagihan')->where('wali_id', Auth::id())
+            ->whereHas('tagihan', function ($q) {
+                $q->where('jenis', 'spp');
+            })
+            ->orderBy('nama', 'asc')->get();
 
-        $siswa = Siswa::with('tagihan')->where('wali_id', Auth::id())->orderBy('nama', 'asc')->get();
+        // $siswa = Siswa::with('tagihan')->where('wali_id', Auth::id())->orderBy('nama', 'asc')->get();
 
         $dataRekap = [];
         foreach ($siswa as $itemSiswa) {

@@ -28,6 +28,7 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('niceadmin') }}/assets/css/style.css" rel="stylesheet">
+    <link href="{{ asset('niceadmin') }}/assets/css/bs-stepper.css" rel="stylesheet">
 
     {{-- YOUR CSS & SCRIPT --}}
     <link rel="stylesheet" href="{{ asset('font/css/all.min.css') }}">
@@ -120,10 +121,11 @@
         .card-hover {
             -webkit-transition: all .25s ease;
             -o-transition: all .25s ease;
-            -moz-transition: all .25s ease;
+            -moz-transition: a ll .25s ease;
             transition: all .25s ease;
         }
     </style>
+    @yield('css')
     <script>
         const popupCenter = ({
             url,
@@ -370,6 +372,8 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('niceadmin') }}/assets/js/main.js"></script>
+    <script src="{{ asset('niceadmin') }}/assets/js/bs-stepper.js"></script>
+
 
     {{-- YOUR SCRIPT --}}
     <script src="{{ asset('niceadmin') }}/assets/js/jquery-3.6.3.min.js"></script>

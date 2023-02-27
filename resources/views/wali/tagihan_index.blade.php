@@ -14,19 +14,21 @@
                                     <th>Nama Siswa</th>
                                     <th>Jurusan</th>
                                     <th>Kelas</th>
-                                    <th>Tanggal Tagihan</th>
+                                    <th>Tgl Tagihan</th>
+                                    <th>Jenis Tagihan</th>
                                     <th>Status Pembayaran</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($tagihan as $item)
-                                    <tr>
+                                    <tr valign="middle">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->siswa->nama }}</td>
                                         <td>{{ $item->siswa->jurusan }}</td>
                                         <td>{{ $item->siswa->kelas }}</td>
                                         <td>{{ $item->tanggal_tagihan->translatedFormat('F Y') }}</td>
+                                        <td>{{ $item->biaya->nama }}</td>
                                         <td>
                                             @if ($item->pembayaran->count() >= 1)
                                                 <a href="{{ route('wali.pembayaran.show', $item->pembayaran->first()->id) }}"

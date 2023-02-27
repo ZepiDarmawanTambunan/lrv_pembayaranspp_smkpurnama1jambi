@@ -1,4 +1,4 @@
-@extends('layouts.app_niceadmin', ['title' => 'Form Migrasi Siswa'])
+@extends('layouts.app_niceadmin', ['title' => 'Mutasi Siswa/I'])
 
 @section('js')
     <script>
@@ -47,7 +47,7 @@
         <div class="col-md-12">
             {!! Form::model(['route' => $route, 'method' => $method]) !!}
             <div class="card">
-                <h5 class="card-header fw-bold fs-5" style="color: #012970;">FORM MIGRASI SISWA</h5>
+                <h5 class="card-header fw-bold fs-5" style="color: #012970;">MUTASI SISWA/I</h5>
                 <div class="card-body mt-3">
                     <div class="row">
                         <div class="col-lg-6">
@@ -151,7 +151,7 @@
                                 @forelse ($siswa as $item)
                                     <tr>
                                         <td>
-                                            {!! Form::checkbox('siswa_id[]', $item->id, null, [
+                                            {!! Form::checkbox('siswa_id[]', $item->id, false, [
                                                 'class' => 'form-check-input checkboxes',
                                                 'id' => 'gridCheck' . $loop->iteration,
                                             ]) !!}

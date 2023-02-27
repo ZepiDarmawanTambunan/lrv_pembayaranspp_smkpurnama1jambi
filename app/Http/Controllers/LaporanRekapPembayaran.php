@@ -14,21 +14,23 @@ class LaporanRekapPembayaran extends Controller
         // old
         // $data['subtitle'] = 'Laporan Berdasarkan: '.'Tahun Ajaran: '.getTahunAjaranFull(date('7'), $request->tahun);
         // new
-        $data['subtitle'] = 'Laporan Berdasarkan: '.'<span class="badge rounded-pill bg-primary">Tahun Ajaran: '.getTahunAjaranFull(date('7'), $request->tahun).'</span>';
+        $data['subtitle'] = 'Laporan Berdasarkan: ' . '<span class="badge rounded-pill bg-primary">Tahun Ajaran: ' . getTahunAjaranFull(date('7'), $request->tahun) . '</span>';
 
         $data['dataRekap'] = [];
-        $siswa = Siswa::with('tagihan')->orderBy('nama', 'asc');
+        $siswa = Siswa::with(['tagihan' => function ($q) {
+            $q->where('tagihans.jenis', '=', 'spp');
+        }])->orderBy('nama', 'asc');
 
-        if($request->filled('kelas')){
+        if ($request->filled('kelas')) {
             $siswa->where('kelas', $request->kelas);
             // old
             // $data['subtitle'] = $data['subtitle']. '| Kelas: '.$request->kelas;
             // new
-            $data['subtitle'] = $data['subtitle']. '| <span class="badge rounded-pill bg-success">Kelas: '.$request->kelas.'</span>';
+            $data['subtitle'] = $data['subtitle'] . '| <span class="badge rounded-pill bg-success">Kelas: ' . $request->kelas . '</span>';
         }
-        if($request->filled('jurusan')){
+        if ($request->filled('jurusan')) {
             $siswa->where('jurusan', $request->jurusan);
-            $data['subtitle'] = $data['subtitle']. '| <span class="badge rounded-pill bg-warning">Jurusan: '.$request->jurusan.'</span>';
+            $data['subtitle'] = $data['subtitle'] . '| <span class="badge rounded-pill bg-warning">Jurusan: ' . $request->jurusan . '</span>';
         }
         $siswa = $siswa->get();
         foreach ($siswa as $itemSiswa) {
@@ -37,14 +39,14 @@ class LaporanRekapPembayaran extends Controller
             $tahun = $request->tahun;
             foreach (bulanSPP() as $bulan) {
                 // jika bulan 1 maka tahun ditambah 1
-                if($bulan == 1){
-                    $tahun = $tahun+1;
+                if ($bulan == 1) {
+                    $tahun = $tahun + 1;
                 }
 
                 // mencari tagihan berdasarkan siswa, bulan dan tahun
-                $tagihan = $itemSiswa->tagihan->filter(function($value) use($bulan, $tahun){
+                $tagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulan, $tahun) {
                     return $value->tanggal_tagihan->year == $tahun
-                    && $value->tanggal_tagihan->month == $bulan;
+                        && $value->tanggal_tagihan->month == $bulan;
                 })->first();
 
                 $dataTagihan[] = [
@@ -54,7 +56,7 @@ class LaporanRekapPembayaran extends Controller
                     'total_tagihan' => $tagihan->total_tagihan ?? '-',
                 ];
             }
-          $data['dataRekap'][] = [
+            $data['dataRekap'][] = [
                 'siswa' => $itemSiswa,
                 'dataTagihan' => $dataTagihan
             ];
