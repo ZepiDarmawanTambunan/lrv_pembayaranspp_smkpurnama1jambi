@@ -28,6 +28,8 @@ use App\Http\Controllers\LaporanFormController;
 use App\Http\Controllers\LaporanTagihanController;
 use App\Http\Controllers\LaporanPembayaranController;
 use App\Http\Controllers\LaporanRekapPembayaran;
+use App\Http\Controllers\LogActivityController;
+use App\Http\Controllers\LogVisitorController;
 use App\Http\Controllers\MigrasiController;
 use App\Http\Controllers\TagihanUpdateLunas;
 use App\Http\Controllers\SettingWhacenterController;
@@ -45,7 +47,7 @@ Auth::routes();
 
 Route::get('panduan-pembayaran/{id}', [PanduanPembayaranController::class, 'index'])->name('panduan.pembayaran');
 
-Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function () {
+Route::prefix('operator')->middleware(['auth', 'auth.operator', 'LogVisits'])->group(function () {
     Route::get('beranda', [BerandaOperatorController::class, 'index'])->name('operator.beranda');
     Route::resource('banksekolah', BankSekolahController::class);
     Route::resource('settingwhacenter', SettingWhacenterController::class);
@@ -74,10 +76,16 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator'])->group(function
     Route::post('tagihandestory', TagihanDestroy::class)->name('tagihandestory.ajax');
     Route::post('siswadestory', SiswaDestroy::class)->name('siswadestory.ajax');
     Route::resource('migrasiform', MigrasiController::class);
+
+    Route::resource('logactivity', LogActivityController::class);
+    Route::post('logactivitydestroy', [LogActivityController::class, 'deleteLog'])->name('logactivitydestroy.ajax');
+    Route::resource('logvisitor', LogVisitorController::class);
+    Route::post('logvisitordestroy', [LogVisitorController::class, 'deleteLog'])->name('logvisitordestroy.ajax');
+
     // Route::post('siswaimport', SiswaImportController::class)->name('siswaimport.store');
 });
 
-Route::prefix('walimurid')->middleware(['auth', 'auth.wali'])->name('wali.')->group(function () {
+Route::prefix('walimurid')->middleware(['auth', 'auth.wali', 'LogVisits'])->name('wali.')->group(function () {
     Route::get('beranda', [BerandaWaliController::class, 'index'])->name('beranda');
     Route::resource('profil', WaliMuridProfilController::class);
     Route::resource('siswa', WaliMuridSiswaController::class);

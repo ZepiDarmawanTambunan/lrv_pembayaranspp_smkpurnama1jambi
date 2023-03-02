@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::submit('MIGRASI', ['class' => 'btn btn-primary pull-right mt-3']) !!}
+                    {!! Form::submit('Mutasi', ['class' => 'btn btn-primary pull-right mt-3']) !!}
                 </div>
             </div>
             <div class="card mt-3">

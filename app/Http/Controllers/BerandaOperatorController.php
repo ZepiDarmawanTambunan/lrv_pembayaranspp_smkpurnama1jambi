@@ -17,19 +17,18 @@ class BerandaOperatorController extends Controller
         TagihanBulananChart $tagihanBulananChart,
         TagihanStatusChart $tagihanStatusChart,
         PembayaranStatusChart $pembayaranStatusChart
-        )
-    {
+    ) {
         $data['tahun'] = date('Y');
         $data['bulan'] = date('m');
         $data['siswa'] = Siswa::get();
 
         $pembayaran = Pembayaran::whereYear('tanggal_bayar', $data['tahun'])
-        ->whereMonth('tanggal_bayar', $data['bulan'])->get();
+            ->whereMonth('tanggal_bayar', $data['bulan'])->get();
         $data['totalPembayaran'] = $pembayaran->sum('jumlah_dibayar');
         $data['totalSiswaSudahBayar'] = $pembayaran->count();
 
         $tagihan = Tagihan::with('siswa')->whereYear('tanggal_tagihan', $data['tahun'])
-        ->whereMonth('tanggal_tagihan', $data['bulan'])->get();
+            ->whereMonth('tanggal_tagihan', $data['bulan'])->get();
         $data['tagihanPerKelas'] = $tagihan->groupBy('siswa.kelas')->sortKeys();
         $data['tagihanBelumBayar'] = $tagihan->where('status', '<>', 'lunas');
         $data['tagihanSudahBayar'] = $tagihan->where('status', 'lunas');

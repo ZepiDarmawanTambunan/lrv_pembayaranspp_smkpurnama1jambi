@@ -7,19 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use DB;
 
 class Pembayaran extends Model
 {
     use HasFactory;
+    use LogsActivity;
     protected $guarded = [];
     protected $dates = ['tanggal_bayar', 'tanggal_konfirmasi'];
     protected $with = ['user', 'tagihan'];
     protected $append = ['status_konfirmasi', 'status_style'];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
+
     public function getStatusStyleAttribute()
     {
-        if($this->tanggal_konfirmasi == null){
+        if ($this->tanggal_konfirmasi == null) {
             return 'secondary';
         }
         return 'success';
@@ -34,7 +43,7 @@ class Pembayaran extends Model
     {
         return Attribute::make(
             get: fn ($value) => ($this->tanggal_konfirmasi == null)
-            ? 'Belum Dikonfirmasi' : 'Sudah Dikonfirmasi',
+                ? 'Belum Dikonfirmasi' : 'Sudah Dikonfirmasi',
         );
     }
 
@@ -58,7 +67,7 @@ class Pembayaran extends Model
         return $this->belongsTo(BankSekolah::class);
     }
 
-        /**
+    /**
      * Get the waliBank that owns the Pembayaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -102,8 +111,8 @@ class Pembayaran extends Model
             $pembayaran->tagihan->updateStatus();
 
             // if pembayaran == 'tf' hapus bukti bayar
-            if($pembayaran->metode_pembayaran == 'transfer'){
-                if($pembayaran->bukti_bayar != null && Storage::exists($pembayaran->bukti_bayar)){
+            if ($pembayaran->metode_pembayaran == 'transfer') {
+                if ($pembayaran->bukti_bayar != null && Storage::exists($pembayaran->bukti_bayar)) {
                     Storage::delete($pembayaran->bukti_bayar);
                 }
             }

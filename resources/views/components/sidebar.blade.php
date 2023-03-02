@@ -17,6 +17,20 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link {{ \Route::is('logactivity*') ? '' : 'collapsed' }}" href="{{ route('logactivity.index') }}">
+            <i class="bi bi-gear"></i>
+            <span>Aktivitas User</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {{ \Route::is('logvisitor*') ? '' : 'collapsed' }}" href="{{ route('logvisitor.index') }}">
+            <i class="bi bi-gear"></i>
+            <span>Monitoring Traffic URL</span>
+        </a>
+    </li>
+
     <li class="nav-heading">DATA MASTER</li>
 
     <li class="nav-item">

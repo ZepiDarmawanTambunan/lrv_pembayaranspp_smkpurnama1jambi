@@ -10,7 +10,7 @@
                     <th width="1%">#</th>
                     <th>TANGGAL</th>
                     <th>METODE</th>
-                    <th>JUMLAH</th>
+                    <th class="text-end">JUMLAH</th>
                 </tr>
             </thead>
             <tbody>

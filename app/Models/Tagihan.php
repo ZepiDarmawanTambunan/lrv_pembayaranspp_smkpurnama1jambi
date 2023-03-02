@@ -10,12 +10,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use DB;
 
 class Tagihan extends Model
 {
     use SearchableTrait;
     use HasFactory;
+    use LogsActivity;
     use HasFormatRupiah;
     protected $guarded = [];
     protected $dates = ['tanggal_tagihan', 'tanggal_jatuh_tempo', 'tanggal_lunas'];
@@ -23,6 +26,12 @@ class Tagihan extends Model
     protected $with = ['user'];
     // dilaravel 9 append atau nama atribute boleh dihapus saja
     protected $append = ['total_tagihan', 'total_pembayaran', 'status_style'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
     public function getStatusStyleAttribute()
     {

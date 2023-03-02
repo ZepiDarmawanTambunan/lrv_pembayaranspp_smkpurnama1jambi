@@ -38,8 +38,14 @@ class LoginController extends Controller
     public function authenticated(Request $request, $user)
     {
         if ($user->akses == 'operator' || $user->akses == 'admin') {
+            activity()->causedBy(Auth::user())
+                ->event('login')
+                ->log('user operator ' . auth()->user()->name . ' melakukan login');
             return redirect()->route('operator.beranda');
         } elseif ($user->akses == 'wali') {
+            activity()->causedBy(Auth::user())
+                ->event('login')
+                ->log('user wali ' . auth()->user()->name . ' melakukan login');
             return redirect()->route('wali.beranda');
         } else {
             Auth::logout();
@@ -60,7 +66,7 @@ class LoginController extends Controller
 
     public function loginUrl(Request $request)
     {
-        if(!$request->hasValidSignature()){
+        if (!$request->hasValidSignature()) {
             abort(401);
         }
         $user = Auth::loginUsingId($request->user_id);

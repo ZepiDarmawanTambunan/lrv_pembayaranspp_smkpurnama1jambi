@@ -6,6 +6,47 @@
             <div class="card">
                 <h5 class="card-header fw-bold fs-5" style="color: #012970;">DATA TAGIHAN SPP</h5>
                 <div class="card-body">
+                    <div class="row my-4">
+                        <div class="col-md-12">
+                            {!! Form::open(['route' => 'wali.tagihan.index', 'method' => 'GET']) !!}
+                            <div class="row justify-content-end gx-2">
+                                <div class="col-md-3 col-sm-12 my-3 my-md-0">
+                                    {!! Form::text('q', request('q'), ['class' => 'form-control', 'placeholder' => 'Pencarian Data Siswa']) !!}
+                                </div>
+                                <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
+                                    {!! Form::select(
+                                        'status',
+                                        [
+                                            'lunas' => 'Lunas',
+                                            'baru' => 'Baru',
+                                            'angsur' => 'Angsur',
+                                        ],
+                                        request('status'),
+                                        ['class' => 'form-select', 'placeholder' => 'pilih status'],
+                                    ) !!}
+                                </div>
+
+                                <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
+                                    {!! Form::select('biaya_id', $biayaList, request('biaya_id'), [
+                                        'class' => 'form-select',
+                                        'placeholder' => 'Pilih biaya',
+                                    ]) !!}
+                                </div>
+                                <div class="col-md-2 col-sm-12 mb-3 mb-md-0">
+                                    {!! Form::selectMonth('bulan', request('bulan'), ['class' => 'form-control', 'placeholder' => 'Pilih Bulan']) !!}
+                                </div>
+                                <div class="col-md-1 col-sm-12 mb-3 mb-md-0">
+                                    {!! Form::selectRange('tahun', date('Y') - 3, date('Y') + 1, request('tahun') ?? date('Y'), [
+                                        'class' => 'form-control',
+                                    ]) !!}
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-primary" type="submit">Tampil</button>
+                                </div>
+                            </div>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
                     <div class="table-responsive mt-3">
                         <table class="{{ config('app.table_style') }}">
                             <thead class="{{ config('app.thead_style') }}">

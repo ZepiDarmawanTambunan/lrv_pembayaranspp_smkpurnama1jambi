@@ -7,14 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Spatie\ModelStatus\HasStatuses;
 use Storage;
-
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Siswa extends Model
 {
     use SearchableTrait;
     use HasStatuses;
     use HasFactory;
+    use LogsActivity;
     protected $guarded = [];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
     public function user()
     {
@@ -39,7 +47,7 @@ class Siswa extends Model
         return $this->hasMany(Tagihan::class);
     }
 
-            /**
+    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -60,7 +68,7 @@ class Siswa extends Model
     public function getFotoAttribute($value)
     {
         $defaultFoto = 'images/user.png';
-        if($value == null){
+        if ($value == null) {
             return $defaultFoto;
         }
         return (Storage::exists($value)) ? $value : $defaultFoto;

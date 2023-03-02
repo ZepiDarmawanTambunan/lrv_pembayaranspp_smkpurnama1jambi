@@ -9,14 +9,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Biaya extends Model
 {
     use SearchableTrait;
     use HasFactory;
+    use LogsActivity;
     use HasFormatRupiah;
+
     protected $guarded = [];
     protected $append = ['nama_biaya_full', 'total_tagihan'];
+
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty();
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * Get all of the children for the Biaya

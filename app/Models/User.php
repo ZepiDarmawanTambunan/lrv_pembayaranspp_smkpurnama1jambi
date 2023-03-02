@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Shetabit\Visitor\Traits\Visitor;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SearchableTrait;
+    use HasApiTokens, HasFactory, Notifiable, SearchableTrait, Visitor;
 
     /**
      * The attributes that are mass assignable.
