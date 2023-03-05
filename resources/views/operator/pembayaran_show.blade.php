@@ -32,6 +32,10 @@
                                     <td>: {{ $model->id }}</td>
                                 </tr>
                                 <tr>
+                                    <td>Jenis Tagihan</td>
+                                    <td>: {{ $model->tagihan->biaya->nama }}</td>
+                                </tr>
+                                <tr>
                                     <td>Invoice Tagihan</td>
                                     <td>:
                                         <a href="{{ route('invoice.show', $model->tagihan_id) }}" target="_blank">

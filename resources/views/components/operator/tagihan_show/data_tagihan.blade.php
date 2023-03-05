@@ -9,7 +9,7 @@
                 <tr>
                     <th width="1%;">No</th>
                     <th>Nama Tagihan</th>
-                    <th>Jumlah Tagihan</th>
+                    <th class="text-end">Jumlah Tagihan</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,12 +17,12 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->nama_biaya }}</td>
-                        <td>{{ formatRupiah($item->jumlah_biaya) }}</td>
+                        <td class="text-end">{{ formatRupiah($item->jumlah_biaya) }}</td>
                     </tr>
                 @endforeach
                 <tr>
-                    <td colspan="2" class="fw-bold">Total Tagihan</td>
-                    <td class="fw-bold">{{ formatRupiah($tagihan->total_tagihan) }}</td>
+                    <td colspan="2" class="fw-bold text-center">Total Tagihan</td>
+                    <td class="fw-bold text-end">{{ formatRupiah($tagihan->total_tagihan) }}</td>
                 </tr>
             </tbody>
         </table>

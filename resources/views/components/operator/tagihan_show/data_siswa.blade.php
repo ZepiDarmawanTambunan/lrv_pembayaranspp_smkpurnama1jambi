@@ -1,5 +1,6 @@
 <div class="card">
-    <h5 class="card-header fw-bold fs-5" style="color: #012970;">DATA TAGIHAN SPP SISWA {{ strtoupper($periode) }}
+    <h5 class="card-header fw-bold fs-5" style="color: #012970;">DATA TAGIHAN {{ strtoupper($tagihan->jenis) }} SISWA
+        {{ strtoupper($periode) }}
     </h5>
     <div class="card-body">
         <table class="table">
@@ -16,6 +17,10 @@
             <tr>
                 <td>NAMA</td>
                 <td>: {{ $siswa->nama }}</td>
+            </tr>
+            <tr>
+                <td>JENIS TAGIHAN</td>
+                <td>: {{ $tagihan->biaya->nama }}</td>
             </tr>
         </table>
     </div>

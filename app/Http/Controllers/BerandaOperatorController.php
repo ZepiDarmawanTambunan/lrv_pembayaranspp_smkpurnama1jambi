@@ -28,7 +28,10 @@ class BerandaOperatorController extends Controller
         $data['totalSiswaSudahBayar'] = $pembayaran->count();
 
         $tagihan = Tagihan::with('siswa')->whereYear('tanggal_tagihan', $data['tahun'])
-            ->whereMonth('tanggal_tagihan', $data['bulan'])->get();
+            ->whereMonth('tanggal_tagihan', $data['bulan'])
+            ->where('jenis', 'spp')
+            ->get();
+
         $data['tagihanPerKelas'] = $tagihan->groupBy('siswa.kelas')->sortKeys();
         $data['tagihanBelumBayar'] = $tagihan->where('status', '<>', 'lunas');
         $data['tagihanSudahBayar'] = $tagihan->where('status', 'lunas');

@@ -40,7 +40,7 @@
                     </tr>
                 @endforelse
                 <tr>
-                    <td colspan="3" class="fw-bold">Total Pembayaran</td>
+                    <td colspan="3" class="fw-bold text-center">Total Pembayaran</td>
                     <td class="text-end fw-bold">{{ formatRupiah($tagihan->total_pembayaran) }}</td>
                     {{-- <td>&nbsp;</td> --}}
                 </tr>
