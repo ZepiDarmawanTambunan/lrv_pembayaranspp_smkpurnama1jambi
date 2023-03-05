@@ -143,12 +143,14 @@ class Tagihan extends Model
      */
     protected static function booted()
     {
-        static::creating(function ($tagihan) {
-            $tagihan->user_id = auth()->user()->id;
-        });
-        static::updating(function ($tagihan) {
-            $tagihan->user_id = auth()->user()->id;
-        });
+        //     static::creating(function ($tagihan) {
+        //         $tagihan->user_id = auth()->user()->id;
+        //     });
+        //     static::updating(function ($tagihan) {
+        //         $tagihan->user_id = auth()->user()->id;
+        //     });
+        // job queue tidak bisa handle auth()
+
         static::deleting(function ($tagihan) {
             // delete notif dari wali terkait tagihan (klo operator gak ada)
             DB::table('notifications')->where('data->tagihan_id', $tagihan->id)->delete();

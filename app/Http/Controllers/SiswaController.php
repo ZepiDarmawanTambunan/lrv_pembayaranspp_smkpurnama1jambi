@@ -67,14 +67,13 @@ class SiswaController extends Controller
      */
     public function store(StoreSiswaRequest $request)
     {
-        // $reqData = $request->validate([...]); old
-        $reqData = $request->validated();
-
+        // $requestData = $request->validate([...]); old
+        $requestData = $request->validated();
         if ($request->hasFile('foto')) {
             $reqData['foto'] = $request->file('foto')->store('public');
         }
 
-        $siswa = Model::create($reqData);
+        Model::create($requestData);
 
         // tes
         return response()->json([

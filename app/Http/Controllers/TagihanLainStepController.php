@@ -82,10 +82,16 @@ class TagihanLainStepController extends Controller
         session(['step' =>  'step3']);
 
         // handle null
-        if (!session()->has('tagihan_untuk') && session('data_siswa') == null) {
+        if (!session()->has('tagihan_untuk')) {
             flash()->addError('silahkan pilih tagihan untuk siapa');
             return redirect()->route('tagihanlainstep.create', ['step' => 1]);
         }
+
+        if (!session()->has('data_siswa') && session('tagihan_untuk') == 'pilihan') {
+            flash()->addError('silahkan cari lalu simpan siswa');
+            return redirect()->route('tagihanlainstep.create', ['step' => 2]);
+        }
+
         $data['activeStep3'] = 'active';
         $data['biayaList'] = Biaya::whereNull('parent_id')->pluck("nama", "id");
         return view('operator.tagihanlain_step3', $data);

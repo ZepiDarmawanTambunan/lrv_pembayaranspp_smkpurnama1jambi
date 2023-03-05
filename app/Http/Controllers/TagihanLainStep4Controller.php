@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTagihanLainStore;
 use App\Models\Biaya;
 use App\Models\Tagihan as Model;
 use App\Models\Siswa;
@@ -45,37 +46,9 @@ class TagihanLainStep4Controller extends Controller
         $tanggalTagihan = Carbon::parse($requestData['tanggal_tagihan']);
         // $bulanTagihan = $tanggalTagihan->format('m');
         // $tahunTagihan = $tanggalTagihan->format('Y');
+        $process = new ProcessTagihanLainStore($requestData, $biaya);
+        $this->dispatch($process);
 
-        $siswa = [];
-        if (isset($requestData['siswa_id']) && $requestData['siswa_id'] != null) {
-            $siswa = Siswa::whereIn('id', $requestData['siswa_id']);
-        }
-        $siswa = $siswa->get();
-
-        DB::beginTransaction();
-        foreach ($siswa as $itemSiswa) {
-            $requestData['siswa_id'] = $itemSiswa->id;
-            // $cekTagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulanTagihan, $tahunTagihan) {
-            //     return $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
-            // })->first();
-
-            // if ($cekTagihan == null) {
-            $tagihan = Model::create($requestData);
-            if ($tagihan->siswa->wali != null) {
-                Notification::send($tagihan->siswa->wali, new TagihanLainNotification($tagihan));
-            }
-
-            foreach ($biaya->children as $itemBiaya) {
-                TagihanDetail::create([
-                    'tagihan_id' => $tagihan->id,
-                    'nama_biaya' => $itemBiaya->nama,
-                    'jumlah_biaya' => $itemBiaya->jumlah,
-                ]);
-            }
-            // }
-        }
-        DB::commit();
-        flash('Data berhasil ditambahkan');
-        return redirect()->route('tagihan.index');
+        return redirect()->route('jobstatus.index', ['job_status_id' => $process->getJobStatusId()]);
     }
 }

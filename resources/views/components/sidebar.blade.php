@@ -72,6 +72,13 @@
     <li class="nav-heading">DATA TRANSAKSI</li>
 
     <li class="nav-item">
+        <a class="nav-link {{ \Route::is('jobstatus*') ? '' : 'collapsed' }}" href="{{ route('jobstatus.index') }}">
+            <i class="bi bi-gear"></i>
+            <span>Buat Tagihan</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link {{ \Route::is('tagihan.*') ? '' : 'collapsed' }}" href="{{ route('tagihan.index') }}">
             <i class="bi bi-calendar2-check"></i>
             <span>Data Tagihan</span>

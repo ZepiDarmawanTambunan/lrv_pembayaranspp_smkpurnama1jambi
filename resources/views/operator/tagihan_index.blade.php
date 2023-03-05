@@ -90,12 +90,6 @@
                 <div class="alert d-none my-1" role="alert" id="alert-message"></div>
                 <h5 class="card-header fw-bold fs-5" style="color: #012970;">{{ $title }}</h5>
                 <div class="card-body">
-                    <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mt-4">
-                        Tambah Tagihan SPP
-                    </a>
-                    <a href="{{ route('tagihanlainstep.create', ['step' => 1]) }}" class="btn btn-success mt-4 ml-2">
-                        Tambah Tagihan Lain
-                    </a>
                     <div class="row my-4">
                         <div class="col-md-12">
                             {!! Form::open(['route' => $routePrefix . '.index', 'method' => 'GET']) !!}

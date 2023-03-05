@@ -17,6 +17,8 @@
         "arielmejiadev/larapex-charts": "^5.2",
         "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "imtigger/laravel-job-status": "^1.2",
+        "imtigger/laravel-job-status-progress-view": "^1.0",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",

@@ -23,6 +23,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WaliMuridPembayaranController;
 use App\Http\Controllers\WaliNotifikasiController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JobStatusController;
 use App\Http\Controllers\PanduanPembayaranController;
 use App\Http\Controllers\LaporanFormController;
 use App\Http\Controllers\LaporanTagihanController;
@@ -46,6 +47,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('panduan-pembayaran/{id}', [PanduanPembayaranController::class, 'index'])->name('panduan.pembayaran');
+
+// \Imtigger\LaravelJobStatus\ProgressController::routes();
 
 Route::prefix('operator')->middleware(['auth', 'auth.operator', 'LogVisits'])->group(function () {
     Route::get('beranda', [BerandaOperatorController::class, 'index'])->name('operator.beranda');
@@ -82,6 +85,7 @@ Route::prefix('operator')->middleware(['auth', 'auth.operator', 'LogVisits'])->g
     Route::resource('logvisitor', LogVisitorController::class);
     Route::post('logvisitordestroy', [LogVisitorController::class, 'deleteLog'])->name('logvisitordestroy.ajax');
 
+    Route::resource('jobstatus', JobStatusController::class);
     // Route::post('siswaimport', SiswaImportController::class)->name('siswaimport.store');
 });
 

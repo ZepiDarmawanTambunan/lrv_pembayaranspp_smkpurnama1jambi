@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use App\Models\TagihanDetail;
 use App\Models\Pembayaran;
 use App\Http\Requests\StoreTagihanRequest;
+use App\Jobs\ProcessTagihanStore;
 use App\Models\Biaya;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -68,44 +69,13 @@ class TagihanController extends Controller
 
     public function store(StoreTagihanRequest $request)
     {
-        $requestData = $request->validated();
-        $siswa = Siswa::currentStatus('aktif');
-        $requestData['status'] = 'baru';
-        $tanggalTagihan = Carbon::parse($requestData['tanggal_tagihan']);
-        $bulanTagihan = $tanggalTagihan->format('m');
-        $tahunTagihan = $tanggalTagihan->format('Y');
-
-        if (isset($requestData['siswa_id']) && $requestData['siswa_id'] != null) {
-            $siswa = $siswa->where('id', $requestData['siswa_id']);
-        }
-        $siswa = $siswa->get();
-
-        DB::beginTransaction();
-        foreach ($siswa as $itemSiswa) {
-            $requestData['siswa_id'] = $itemSiswa->id;
-            $requestData['biaya_id'] = $itemSiswa->biaya_id; //tambahan
-            $cekTagihan = $itemSiswa->tagihan->filter(function ($value) use ($bulanTagihan, $tahunTagihan) {
-                return $value->tanggal_tagihan->year == $tahunTagihan && $value->tanggal_tagihan->month == $bulanTagihan;
-            })->first();
-
-            if ($cekTagihan == null) {
-                $tagihan = Model::create($requestData);
-                if ($tagihan->siswa->wali != null) {
-                    Notification::send($tagihan->siswa->wali, new TagihanNotification($tagihan));
-                }
-                $biaya = $itemSiswa->biaya->children;
-                foreach ($biaya as $itemBiaya) {
-                    TagihanDetail::create([
-                        'tagihan_id' => $tagihan->id,
-                        'nama_biaya' => $itemBiaya->nama,
-                        'jumlah_biaya' => $itemBiaya->jumlah,
-                    ]);
-                }
-            }
-        }
-        DB::commit();
-        flash('Data berhasil ditambahkan');
-        return redirect()->route('tagihan.index');
+        $requestData = array_merge($request->validated(), ['user_id' => auth()->user()->id]);
+        $processTagihan = new ProcessTagihanStore($requestData);
+        $this->dispatch($processTagihan);
+        // return redirect()->action('\Imtigger\LaravelJobStatus\ProgressController@progress', [$processTagihan->getJobStatusId()]);
+        return redirect()->route('jobstatus.index', ['job_status_id' => $processTagihan->getJobStatusId()]);
+        // flash('Data berhasil ditambahkan');
+        // return redirect()->route('tagihan.index');
     }
 
     public function show(Request $request, $id)
