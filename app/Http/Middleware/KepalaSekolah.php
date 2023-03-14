@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Operator
+class KepalaSekolah
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,9 @@ class Operator
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->akses == 'operator') {
+        if ($request->user()->akses == 'kepala_sekolah') {
             return $next($request);
         }
-        abort(403, 'Akses khusus operator');
+        abort(403, 'Akses khusus kepala sekolah');
     }
 }

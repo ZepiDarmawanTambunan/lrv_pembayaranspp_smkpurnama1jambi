@@ -16,6 +16,7 @@
         "andes2912/indobank": "^0.7.0",
         "arielmejiadev/larapex-charts": "^5.2",
         "barryvdh/laravel-dompdf": "^2.0",
+        "doctrine/dbal": "^3.6",
         "guzzlehttp/guzzle": "^7.2",
         "imtigger/laravel-job-status": "^1.2",
         "imtigger/laravel-job-status-progress-view": "^1.0",

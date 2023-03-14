@@ -1,4 +1,8 @@
-{!! Form::open(['route' => 'laporanpembayaran.index', 'method' => 'GET', 'target' => '_blank']) !!}
+{!! Form::open([
+    'route' => auth()->user()->akses . '.laporanpembayaran.index',
+    'method' => 'GET',
+    'target' => '_blank',
+]) !!}
 <div class="row">
     <div class="col-md-2 col-sm-12 mb-1 mb-md-0">
         <label for="biaya_id" class="form-label">Jenis Tagihan</label>

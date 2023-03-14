@@ -1,4 +1,8 @@
-{!! Form::open(['route' => 'laporanrekappembayaran.index', 'method' => 'GET', 'target' => '_blank']) !!}
+{!! Form::open([
+    'route' => auth()->user()->akses . '.laporanrekappembayaran.index',
+    'method' => 'GET',
+    'target' => '_blank',
+]) !!}
 <div class="row">
     <div class="col-md-2 col-sm-12 mb-1 mb-md-0">
         <label for="kelas" class="form-label">Kelas</label>

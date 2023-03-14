@@ -45,9 +45,9 @@ class PembayaranNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -63,8 +63,8 @@ class PembayaranNotification extends Notification
             'wali_id' => $this->pembayaran->wali_id,
             'pembayaran_id' => $this->pembayaran->id,
             'title' => 'Pembayaran Tagihan',
-            'messages' => $this->pembayaran->wali->name.' melakukan pembayaran tagihan.',
-            'url' => route('pembayaran.show', $this->pembayaran->id),
+            'messages' => $this->pembayaran->wali->name . ' melakukan pembayaran tagihan.',
+            'url' => route('wali.pembayaran.show', $this->pembayaran->id),
         ];
     }
 
@@ -84,8 +84,8 @@ class PembayaranNotification extends Notification
             ->to($notifiable->nohp)
             ->line("Halo Operator, " . $notifiable->name)
             ->line('Ada Pembayaran Tagihan SPP')
-            ->line($this->pembayaran->wali->name.' Melakukan pembayaran tagihan.');
-            // ->line('Untuk melihat info pembayaran, klik link berikut: '. $url)
-            // ->line('JANGAN BERIKAN LINK INI KESIAPAPUN.');
+            ->line($this->pembayaran->wali->name . ' Melakukan pembayaran tagihan.');
+        // ->line('Untuk melihat info pembayaran, klik link berikut: '. $url)
+        // ->line('JANGAN BERIKAN LINK INI KESIAPAPUN.');
     }
 }

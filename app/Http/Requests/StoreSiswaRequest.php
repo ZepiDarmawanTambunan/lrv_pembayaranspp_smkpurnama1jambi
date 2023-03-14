@@ -24,14 +24,14 @@ class StoreSiswaRequest extends FormRequest
     public function rules()
     {
         return [
-                'wali_id' => 'nullable|exists:users,id',
-                'nama' => 'required|min:3|max:255',
-                'biaya_id' => 'required|exists:biayas,id',
-                'nisn' => 'required|unique:siswas',
-                'jurusan' => 'required',
-                'kelas' => 'required',
-                'angkatan' => 'required',
-                'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5048',
+            'wali_id' => 'nullable|exists:users,id',
+            'nama' => 'required|min:3|max:255',
+            'biaya_id' => 'required|exists:biayas,id',
+            'nisn' => 'required|unique:siswas',
+            'jurusan' => 'required',
+            'kelas' => 'required',
+            'angkatan' => 'required',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5048',
         ];
     }
 }

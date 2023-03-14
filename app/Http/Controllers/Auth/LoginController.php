@@ -37,7 +37,9 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        if ($user->akses == 'operator' || $user->akses == 'admin') {
+        if ($user->akses == 'kepala_sekolah') {
+            return redirect()->route('kepala_sekolah.beranda');
+        } else if ($user->akses == 'operator') {
             activity()->causedBy(Auth::user())
                 ->event('login')
                 ->log('user operator ' . auth()->user()->name . ' melakukan login');

@@ -171,10 +171,10 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        @if (auth()->user()->akses == 'operator')
+        @if (auth()->user()->akses == 'operator' || auth()->user()->akses == 'kepala_sekolah')
             <div class="search-bar">
                 {!! Form::open([
-                    'route' => 'tagihan.index',
+                    'route' => auth()->user()->akses . '.tagihan.index',
                     'method' => 'GET',
                     'class' => 'search-form d-flex align-items-center',
                 ]) !!}
@@ -281,10 +281,10 @@
                             <hr class="dropdown-divider">
                         </li>
 
-                        @if (auth()->user()->akses == 'operator')
+                        @if (auth()->user()->akses == 'operator' || auth()->user()->akses == 'kepala_sekolah')
                             <li>
                                 <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('user.edit', auth()->user()->id) }}">
+                                    href="{{ route(auth()->user()->akses . '.user.edit', auth()->user()->id) }}">
                                     <i class="bi bi-person"></i>
                                     <span>Ubah Profil</span>
                                 </a>
@@ -292,13 +292,15 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="{{ route('setting.create') }}">
-                                    <i class="bi bi-gear"></i>
-                                    <span>Pengaturan</span>
-                                </a>
-                            </li>
+                            @if (auth()->user()->akses == 'kepala_sekolah')
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{{ route('kepala_sekolah.setting.create') }}">
+                                        <i class="bi bi-gear"></i>
+                                        <span>Pengaturan</span>
+                                    </a>
+                                </li>
+                            @endif
                         @else
                             <li>
                                 <a class="dropdown-item d-flex align-items-center"
@@ -330,7 +332,9 @@
     <aside id="sidebar" class="sidebar">
 
         @if (auth()->user()->akses == 'operator')
-            @include('components.sidebar')
+            @include('components.sidebar_operator')
+        @elseif(auth()->user()->akses == 'kepala_sekolah')
+            @include('components.sidebar_kepala_sekolah')
         @else
             @include('components.sidebar_wali')
         @endif

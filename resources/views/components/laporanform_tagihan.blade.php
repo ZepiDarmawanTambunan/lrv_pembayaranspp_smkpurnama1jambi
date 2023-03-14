@@ -1,4 +1,8 @@
-{!! Form::open(['route' => 'laporantagihan.index', 'method' => 'GET', 'target' => 'blank']) !!}
+{!! Form::open([
+    'route' => auth()->user()->akses . '.laporantagihan.index',
+    'method' => 'GET',
+    'target' => 'blank',
+]) !!}
 <div class="row">
     <div class="col-md-2 col-sm-12 mb-1 mb-md-0">
         <label for="biaya_id" class="form-label">Jenis Tagihan</label>
